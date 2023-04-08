@@ -1,2 +1,2 @@
-# solucoes-obi
-Minhas soluções para algumas questões da obi
+# soluções da obi
+Minhas soluções em Python para algumas questões da obi
