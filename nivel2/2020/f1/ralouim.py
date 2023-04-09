@@ -1,43 +1,51 @@
 # questão: https://olimpiada.ic.unicamp.br/pratique/p2/2020/f1/ralouim/
-# 10/100
-def calcular_distancia(x1, y1, x2, y2):
-    return (x1 - x2) ** 2 + (y1 - y2) ** 2
+# nota: 20/100
+import math
 
+def calcular_todas_distancias():
+    lista_pos = list(ENTRADAS)
+    retorno = {}
+    for _ in range(N-1):
+        i = lista_pos.pop()
+        retorno[(i,i)] = INF
+        for j in lista_pos:
+            distancia = math.dist(i,j)
+            retorno[(i,j)] = distancia
+            retorno[(j,i)] = distancia
+    retorno[(lista_pos[0],lista_pos[0])] = INF
+    return retorno
 
 def primeira_distancia():
-    distancia_entrada = {}
-    entradas = ENTRADAS.copy()
-    for entrada in entradas:
-        distancia = calcular_distancia(0, 0, *entrada)
-        distancia_entrada[entrada] = distancia
+    distancia_entrada = {entrada: math.dist([0,0],entrada) for entrada in ENTRADAS}
+    # for entrada in ENTRADAS:
+    #     distancia = math.dist([0,0],entrada)
+    #     distancia_entrada[entrada] = distancia
 
-    resultado =[]
-    for i,j in distancia_entrada.items():
-        resultado.append(maior_distancia(i,(0,0),j,1))
+
+    lista = sorted(distancia_entrada.items(),reverse=True, key=lambda x:x[1])[:2]
+    resultado = {maior_distancia(i,j,1) for i,j in lista}
+    # for i,j in lista:
+    #     resultado.append(maior_distancia(i,j,1))
     return max(resultado)
 
 
-def maior_distancia(atual, anterio, distancia_anterio, contador):
-    distancia_entrada = {}
-    entradas = ENTRADAS.copy()
-    entradas.remove(atual)
-    if anterio in entradas:
-        entradas.remove(anterio)
-
-    for entrada in entradas:
-        distancia = calcular_distancia(*atual, *entrada)
-        if distancia < distancia_anterio:
-            distancia_entrada[entrada] = distancia
-
+def maior_distancia(atual, distancia_anterio, contador):
+    distancia_entrada = {entrada: DISTANCIAS[(atual,entrada)] for entrada in ENTRADAS if DISTANCIAS[(atual,entrada)] < distancia_anterio}
+    # for entrada in ENTRADAS:
+    #     distancia = DISTANCIAS.get((atual,entrada),distancia_anterio)
+    #     if distancia < distancia_anterio:
+    #         distancia_entrada[entrada] = distancia
     if distancia_entrada:
-        resultado =[]
-        for i, j in distancia_entrada.items():
-            resultado.append(maior_distancia(i,atual,j,contador+1))
+        lista = sorted(distancia_entrada.items(),reverse=True, key=lambda x:x[1])[:2]
+        resultado = {maior_distancia(i,j,contador+1) for i,j in lista}
+        # for i, j in lista:
+        #     resultado.append(maior_distancia(i,j,contador+1))
         return max(resultado)
     return contador
 
 
-n = int(input())
-ENTRADAS = [input().split() for _ in range(n)]
-ENTRADAS = [(int(x),int(y)) for x,y in ENTRADAS]
+N = int(input())
+ENTRADAS = {tuple(map(int,input().split())) for _ in range(N)}
+INF = float('inf')
+DISTANCIAS = calcular_todas_distancias()
 print(primeira_distancia())
