@@ -22,17 +22,14 @@ def primeira_distancia():
     #     distancia_entrada[entrada] = distancia
 
 
-    lista = sorted(distancia_entrada.items(),reverse=True, key=lambda x:x[1])[:1]
+    lista = sorted(distancia_entrada.items(),reverse=True, key=lambda x:x[1])[:2]
     resultado = [maior_distancia(i,j,1) for i,j in lista]
     # for i,j in lista:
     #     resultado.append(maior_distancia(i,j,1))
-    resultado.sort()
-    return resultado[-1]
+    return max(resultado)
 
 
-def maior_distancia(atual, distancia_anterio, contador,lista = [(0,0)]):
-    anterior = lista.copy()
-    anterior.append(atual)
+def maior_distancia(atual, distancia_anterio, contador):
     distancia_entrada = {entrada: DISTANCIAS[(atual,entrada)] for entrada in ENTRADAS if DISTANCIAS[(atual,entrada)] < distancia_anterio}
     # for entrada in ENTRADAS:
     #     distancia = DISTANCIAS.get((atual,entrada),distancia_anterio)
@@ -40,12 +37,11 @@ def maior_distancia(atual, distancia_anterio, contador,lista = [(0,0)]):
     #         distancia_entrada[entrada] = distancia
     if distancia_entrada:
         lista = sorted(distancia_entrada.items(),reverse=True, key=lambda x:x[1])[:2]
-        resultado = [maior_distancia(i,j,contador+1,anterior)  for i,j in lista]
+        resultado = [maior_distancia(i,j,contador+1)  for i,j in lista]
         # for i, j in lista:
         #     resultado.append(maior_distancia(i,j,contador+1))
-        resultado.sort()
-        return resultado[-1]
-    return [contador,anterior]
+        return max(resultado)
+    return contador
 
 
 N = int(input())
