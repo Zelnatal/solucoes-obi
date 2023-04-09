@@ -22,14 +22,17 @@ def primeira_distancia():
     #     distancia_entrada[entrada] = distancia
 
 
-    lista = sorted(distancia_entrada.items(),reverse=True, key=lambda x:x[1])[:2]
-    resultado = {maior_distancia(i,j,1) for i,j in lista}
+    lista = sorted(distancia_entrada.items(),reverse=True, key=lambda x:x[1])[:1]
+    resultado = [maior_distancia(i,j,1) for i,j in lista]
     # for i,j in lista:
     #     resultado.append(maior_distancia(i,j,1))
-    return max(resultado)
+    resultado.sort()
+    return resultado[-1]
 
 
-def maior_distancia(atual, distancia_anterio, contador):
+def maior_distancia(atual, distancia_anterio, contador,lista = [(0,0)]):
+    anterior = lista.copy()
+    anterior.append(atual)
     distancia_entrada = {entrada: DISTANCIAS[(atual,entrada)] for entrada in ENTRADAS if DISTANCIAS[(atual,entrada)] < distancia_anterio}
     # for entrada in ENTRADAS:
     #     distancia = DISTANCIAS.get((atual,entrada),distancia_anterio)
@@ -37,15 +40,17 @@ def maior_distancia(atual, distancia_anterio, contador):
     #         distancia_entrada[entrada] = distancia
     if distancia_entrada:
         lista = sorted(distancia_entrada.items(),reverse=True, key=lambda x:x[1])[:2]
-        resultado = {maior_distancia(i,j,contador+1) for i,j in lista}
+        resultado = [maior_distancia(i,j,contador+1,anterior)  for i,j in lista]
         # for i, j in lista:
         #     resultado.append(maior_distancia(i,j,contador+1))
-        return max(resultado)
-    return contador
+        resultado.sort()
+        return resultado[-1]
+    return [contador,anterior]
 
 
 N = int(input())
 ENTRADAS = {tuple(map(int,input().split())) for _ in range(N)}
 INF = float('inf')
 DISTANCIAS = calcular_todas_distancias()
+
 print(primeira_distancia())
