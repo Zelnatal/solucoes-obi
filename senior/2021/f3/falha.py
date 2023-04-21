@@ -1,5 +1,5 @@
 # questões: https://olimpiada.ic.unicamp.br/pratique/ps/2021/f3/falha/
-# notas: --/100
+# notas: 70/100
 N = int(input())
 entradas = [input() for _ in range(N)]
 contado = 0
