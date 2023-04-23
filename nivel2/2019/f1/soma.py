@@ -2,10 +2,9 @@
 # nota: 25/100
 
 N, K = [int(x) for x in input().split()]
-quadrado = [int(x) for  x in input().split()]
 prefix=[0]
-for i in quadrado:
-    prefix.append(prefix[-1] + i)
+for i in input().split():
+    prefix.append(prefix[-1] + int(i))
 count = 0
 
 for i in range(N+1):
