@@ -1,8 +1,8 @@
 # questão: https://olimpiada.ic.unicamp.br/pratique/p2/2019/f1/soma/
 # nota: 25/100
-
+from array import array
 N, K = [int(x) for x in input().split()]
-prefix=[0]
+prefix=array('i',[0])
 for i in input().split():
     prefix.append(prefix[-1] + int(i))
 count = 0
